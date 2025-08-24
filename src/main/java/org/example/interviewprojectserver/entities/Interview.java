@@ -10,8 +10,8 @@ import java.util.UUID;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
 @Data
+@Entity
 @Table(name = "interviews")
 public class Interview {
 
@@ -31,19 +31,19 @@ public class Interview {
     private String description;
 
     // Multiple interviews can reference multiple assignments
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "interview_assignments",
-            joinColumns = @JoinColumn(name = "interview_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "assignment_id", referencedColumnName = "id")
+            joinColumns = @JoinColumn(name = "interview_id"),
+            inverseJoinColumns = @JoinColumn(name = "assignment_id")
     )
     private List<Assignment> assignments;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "candidate_user")
     private User candidate_user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recruiter_user")
     private User recruiter_user;
 }

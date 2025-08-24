@@ -20,13 +20,24 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping
-    private ResponseEntity<UserDto> createUser(@RequestBody @Valid UserDto newUser, Authentication auth) {
-
-        String auth_id = auth.getName();
-
-        UserDto createdUser = userService.createUser(auth_id, newUser);
-        return ResponseEntity.ok(createdUser);
+    @GetMapping
+    private String checkAuth(){
+        return "Only Authenticated users can access this endpoint";
     }
 
+    @PostMapping
+    private ResponseEntity<UserDto> createUser(
+            @RequestBody @Valid UserDto newUser,
+            Authentication authToken
+    ) {
+
+        // 1) Extract id auth from the auth token
+
+        String auth_id = authToken.getName();
+
+        // 2) Input the auth_token into the function as well as the other data fields.
+
+        userService.createUser(newUser, auth_id);
+        return ResponseEntity.ok().build();
+    }
 }

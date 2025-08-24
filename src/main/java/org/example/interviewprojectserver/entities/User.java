@@ -67,9 +67,15 @@ public class User {
     @UpdateTimestamp
     private LocalDateTime updated_at;
 
-    @OneToMany(mappedBy = "candidate_user")
+    @OneToMany(
+            fetch = FetchType.LAZY,
+            mappedBy = "candidate_user"
+    )
     private List<Interview> candidate_interviews;
 
-    @OneToMany(mappedBy = "recruiter_user")
+    @OneToMany(
+            fetch = FetchType.LAZY,
+            mappedBy = "recruiter_user"
+    )
     private List<Interview> recruiter_interviews;
 }
