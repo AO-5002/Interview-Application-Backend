@@ -1,9 +1,38 @@
+server:
+  port: 8080
+
 spring:
   application:
     name: Interview-Project-Server
+
 
   datasource:
     url: jdbc:postgresql://localhost:5432/interview_application
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://dev-z3ijbmz2lghugt5z.us.auth0.com/
+
+  jpa:
+    hibernate:
+      ddl-auto: update   # options: create, create-drop, update, validate, none
+    show-sql: true       # logs SQL queries
+    properties:
+      hibernate:
+        format_sql: true
+
+
+cloud:
+  aws:
+    credentials:
+      access-key: ${AWS_ACCESS_KEY}    # ✅ Matches @Value("${cloud.aws.credentials.access-key}")
+      secret-key: ${AWS_SECRET_KEY}    # ✅ Matches @Value("${cloud.aws.credentials.secret-key}")
+    region:
+      static: ${AWS_REGION}            # ✅ Matches @Value("${cloud.aws.region.static}")
+    s3:
+      bucket-name: ${AWS_BUCKET_NAME}  # Bucket name used for S3 operations
