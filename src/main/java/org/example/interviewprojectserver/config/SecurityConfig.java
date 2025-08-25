@@ -22,6 +22,8 @@ public class SecurityConfig {
         return http
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("/users").authenticated()
+                        .requestMatchers("/users/interviews").authenticated()
+                        .requestMatchers("/interview").authenticated()
                 )
                 .cors(withDefaults())
                 .oauth2ResourceServer(oauth2 -> oauth2

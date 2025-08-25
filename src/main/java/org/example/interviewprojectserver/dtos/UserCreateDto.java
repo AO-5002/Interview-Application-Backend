@@ -6,7 +6,7 @@ import lombok.Data;
 import org.example.interviewprojectserver.entities.UserRole;
 
 @Data
-public class UserDto {
+public class UserCreateDto {
 
     // We can honestly use this Dto for POST request.
 

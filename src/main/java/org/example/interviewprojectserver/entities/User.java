@@ -67,11 +67,15 @@ public class User {
     @UpdateTimestamp
     private LocalDateTime updated_at;
 
+    // A user can be a candidate of multiple interviews
+
     @OneToMany(
             fetch = FetchType.LAZY,
             mappedBy = "candidate_user"
     )
     private List<Interview> candidate_interviews;
+
+    // A user can be a recruiter of multiple interviews
 
     @OneToMany(
             fetch = FetchType.LAZY,
