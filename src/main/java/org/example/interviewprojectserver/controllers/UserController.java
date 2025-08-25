@@ -38,6 +38,9 @@ public class UserController {
         // 2) Input the auth_token into the function as well as the other data fields.
 
         userService.createUser(newUser, auth_id);
+
+        // 3) Return a 200 OK response, if the function was successful.
+
         return ResponseEntity.ok().build();
     }
 }

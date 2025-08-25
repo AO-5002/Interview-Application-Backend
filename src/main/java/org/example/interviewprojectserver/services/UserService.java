@@ -56,7 +56,7 @@ public class UserService {
             throw new UserAlreadyExistsException("User with auth0 id " + authId + " already exists");
         }
 
-        // 2) Create the user & set the auth id
+        // 2) Create the user AND set the auth id to the newly created user.
 
         User createdUser = userMapper.userDtoToUser(newUser);
         createdUser.setAuth0_id(authId);
@@ -65,7 +65,5 @@ public class UserService {
 
         userRepository.save(createdUser);
     }
-
-
 
 }
