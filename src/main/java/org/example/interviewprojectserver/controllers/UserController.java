@@ -50,11 +50,11 @@ public class UserController {
     // Return your candidate interviews (YOU THE CANDIDATE).
 
     @GetMapping("/interviews")
-    private ResponseEntity<List<Interview>> getCandidates(Authentication auth){
+    private ResponseEntity<List<Interview>> getCandidates(Authentication authToken){
 
         // 1) Extract id auth from the auth token
 
-        String auth_id = auth.getName();
+        String auth_id = authToken.getName();
 
         // 2) Return the interviews.
 

@@ -57,7 +57,7 @@ public class UserService {
     // This works for either candidate or recruiter.
     public List<Interview> getInterviews(String authId){
 
-        // 1) Return user based on Auth id.
+        // 1) Check if the user exists, and then return user based on Auth id.
 
         User user = getUserBasedOnAuth(authId);
 
