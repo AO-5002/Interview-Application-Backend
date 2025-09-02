@@ -2,12 +2,12 @@ package org.example.interviewprojectserver.services;
 
 import lombok.RequiredArgsConstructor;
 import org.example.interviewprojectserver.dtos.UserCreateDto;
+import org.example.interviewprojectserver.dtos.UserDto;
 import org.example.interviewprojectserver.entities.Interview;
 import org.example.interviewprojectserver.entities.User;
 import org.example.interviewprojectserver.entities.UserRole;
 import org.example.interviewprojectserver.exceptions.interview_errors.IncorrectRoleException;
 import org.example.interviewprojectserver.exceptions.interview_errors.NoInterviewsFoundException;
-import org.example.interviewprojectserver.exceptions.user_errors.UserAlreadyExistsException;
 import org.example.interviewprojectserver.exceptions.user_errors.UserNotFoundException;
 import org.example.interviewprojectserver.mappers.UserMapper;
 import org.example.interviewprojectserver.repositories.UserRepository;
@@ -41,12 +41,12 @@ public class UserService {
         // 1) Check if the user already exists
 
         if(userRepository.existsByAuth0_id(authId)){
-            throw new UserAlreadyExistsException("User with auth0 id " + authId + " already exists");
+            return;
         }
 
         // 2) Create the user AND set the auth id to the newly created user.
 
-        User createdUser = userMapper.userDtoToUser(newUser);
+        User createdUser = userMapper.userCreateDtoToUser(newUser);
         createdUser.setAuth0_id(authId);
 
         // 3) Save to the db
@@ -83,6 +83,11 @@ public class UserService {
         else{
             throw new IncorrectRoleException("User role is incorrect. (UNAUTHORIZED)");
         }
+    }
+
+    public UserDto getUserDto(String authId){
+        User returnedUser = getUserBasedOnAuth(authId);
+        return userMapper.userToUserDto(returnedUser);
     }
 
 }

@@ -2,8 +2,11 @@ package org.example.interviewprojectserver.controllers;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.example.interviewprojectserver.dtos.UserCreateDto;
+import org.example.interviewprojectserver.dtos.UserDto;
 import org.example.interviewprojectserver.entities.Interview;
+import org.example.interviewprojectserver.entities.User;
 import org.example.interviewprojectserver.services.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -13,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/users")
+@RequestMapping("/user")
 @CrossOrigin(
         origins = "http://localhost:3000",
         allowedHeaders = "*",
@@ -22,11 +25,6 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-
-    @GetMapping
-    private String checkAuth(){
-        return "Only Authenticated users can access this endpoint";
-    }
 
     @PostMapping
     private ResponseEntity<UserCreateDto> createUser(
@@ -63,5 +61,21 @@ public class UserController {
         // 3) Return Response
 
         return ResponseEntity.ok(interviews);
+    }
+
+    @GetMapping
+    private ResponseEntity<UserDto> getUser(Authentication authToken){
+
+        // 1) Extract id auth from the auth token
+
+        String auth_id = authToken.getName();
+
+        // 2) Return the user.
+
+        UserDto returnedUser = userService.getUserDto(auth_id);
+
+        // 3) Return response
+
+        return ResponseEntity.ok(returnedUser);
     }
 }

@@ -30,15 +30,12 @@ public class Example {
     )
     private String output;
     @Column(
-            name = "explanation"
+            name = "explanation",
+            nullable = false
     )
     private String explanation;
 
-    // Here, the examples will be distinguished by their associated interview id
-
-    @Column(
-            name = "interview_id",
-            nullable = false
-    )
-    private UUID interview_id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "assignment_examples")
+    private Assignment assignment_examples;
 }

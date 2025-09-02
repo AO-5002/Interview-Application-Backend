@@ -33,6 +33,17 @@ public class Assignment {
     )
     private String description;
 
+    @OneToMany(
+            fetch = FetchType.LAZY,
+            mappedBy = "assignment_examples"
+    )
+    private List<Example> examples;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "assignment_user")
+    private User assignment_user;
+
+
     @ManyToMany(mappedBy = "assignments")
     private List<Interview> interviews;
 

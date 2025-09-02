@@ -16,16 +16,15 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: https://dev-z3ijbmz2lghugt5z.us.auth0.com/
+          issuer-uri: ${AUTH_ISSUER_URI}
 
   jpa:
     hibernate:
-      ddl-auto: update   # options: create, create-drop, update, validate, none
+      ddl-auto: create   # options: create, create-drop, update, validate, none
     show-sql: true       # logs SQL queries
     properties:
       hibernate:
         format_sql: true
-
 
 cloud:
   aws:
@@ -36,3 +35,10 @@ cloud:
       static: ${AWS_REGION}            # ✅ Matches @Value("${cloud.aws.region.static}")
     s3:
       bucket-name: ${AWS_BUCKET_NAME}  # Bucket name used for S3 operations
+
+
+io:
+  stream:
+    api:
+      key: ${STREAM_API_KEY}
+      secret: ${STREAM_SECRET_KEY}

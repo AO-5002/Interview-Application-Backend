@@ -82,4 +82,10 @@ public class User {
             mappedBy = "recruiter_user"
     )
     private List<Interview> recruiter_interviews;
+
+    @OneToMany(
+            fetch = FetchType.LAZY,
+            mappedBy = "assignment_user"
+    )
+    private List<Assignment> assignments;
 }
