@@ -20,20 +20,9 @@ public class StreamController {
 
     @GetMapping("/token")
     private ResponseEntity<String> getStreamToken(Authentication authToken){
-
-        // 1) Extract id auth from the auth token
-
         String authId = authToken.getName();
-
-        // 2) Return the stream token.
-
         String cleanUserId = authId.replaceAll("[^a-zA-Z0-9@_-]", "_");
-
-
-        String token = streamTokenService.generateStreamToken(authId);
-
-        // 3) Return response
-
+        String token = streamTokenService.generateStreamToken(cleanUserId); // ← Use cleanUserId
         return ResponseEntity.ok(token);
     }
 

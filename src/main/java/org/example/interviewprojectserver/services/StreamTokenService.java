@@ -1,12 +1,14 @@
 package org.example.interviewprojectserver.services;
 
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import java.time.Instant;
+import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,26 +16,38 @@ import java.util.Map;
 @Service
 public class StreamTokenService {
 
-    // Make sure this is your Stream VIDEO API secret, not Chat
     @Value("${io.stream.api.secret}")
     private String streamVideoSecret;
-
     public String generateStreamToken(String userId) {
-        // Convert string secret to SecretKey
-        SecretKey key = Keys.hmacShaKeyFor(streamVideoSecret.getBytes());
+        System.out.println("=== TOKEN DEBUG ===");
+        System.out.println("User ID: " + userId);
+        System.out.println("Secret (first 20 chars): " + streamVideoSecret.substring(0, Math.min(20, streamVideoSecret.length())) + "...");
 
-        // Current time
+        // Try base64 decoding the secret (some Stream secrets are base64 encoded)
+        SecretKey key;
+        try {
+            byte[] decodedSecret = Base64.getDecoder().decode(streamVideoSecret);
+            key = Keys.hmacShaKeyFor(decodedSecret);
+            System.out.println("Using base64 decoded secret");
+        } catch (Exception e) {
+            // If base64 decode fails, use the raw secret
+            key = Keys.hmacShaKeyFor(streamVideoSecret.getBytes());
+            System.out.println("Using raw secret");
+        }
+
         Instant now = Instant.now();
 
-        // Create claims for Stream Video token
         Map<String, Object> claims = new HashMap<>();
         claims.put("user_id", userId);
 
-        return Jwts.builder()
+        String token = Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(Date.from(now))
-                .setExpiration(Date.from(now.plusSeconds(3600))) // 1 hour expiry
-                .signWith(key)
+                .setExpiration(Date.from(now.plusSeconds(3600)))
+                .signWith(key, SignatureAlgorithm.HS256)  // Force HS256 algorithm
                 .compact();
+
+        System.out.println("Generated token: " + token.substring(0, 50) + "...");
+        return token;
     }
 }
