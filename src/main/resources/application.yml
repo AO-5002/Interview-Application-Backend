@@ -40,5 +40,5 @@ cloud:
 io:
   stream:
     api:
-      key: ${STREAM_API_KEY}
-      secret: ${STREAM_SECRET_KEY}
+      key: ${STREAM_KEY}
+      secret: ${STREAM_SECRET}

@@ -23,6 +23,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("/user").authenticated()
                         .requestMatchers("/user/interviews").authenticated()
+                        .requestMatchers("/stream").authenticated()
+                        .requestMatchers("/stream/token").authenticated()
                         .requestMatchers("/interview").authenticated()
                 )
                 .cors(withDefaults())
